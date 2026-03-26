@@ -5,5 +5,7 @@
 
 typedef uint32_t bitset_t;
 typedef uint8_t byte_t;
+typedef uint8_t cmdcode_t;
+typedef uint64_t hash64_t;
 
 #endif
