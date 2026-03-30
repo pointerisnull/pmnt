@@ -66,11 +66,11 @@ typedef struct mb_pdu {
 } mb_pdu;
 
 #pragma pack(push, 1) // Ensure data is packed together
-struct mb_frame {
+typedef struct mb_frame {
     byte_t address;
     mb_pdu pdu;
     crc16_t crc;
-};
+} mb_frame;
 #pragma pack(pop)
 
 struct mb_data_model {
@@ -96,9 +96,16 @@ struct mb_slave_node {
     struct mb_data_model data;
 };
 
+// Frame helpers
 mb_pdu gen_pdu(byte_t *data, size_t size);
 mb_pdu assemble_pdu(byte_t func_code, word_t reg_addr, byte_t *data, size_t size);
 struct mb_frame assemble_frame(byte_t address, mb_pdu *pdu);
 crc16_t gen_crc(byte_t address, mb_pdu *pdu);
+
+// Data handlers -- slave
+void handle_frame(mb_frame *frame);
+
+// Data handlers -- master
+
 
 #endif

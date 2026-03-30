@@ -11,6 +11,4 @@ typedef uint64_t hash64_t;
 typedef uint16_t crc16_t;
 typedef uint64_t ipv4_t;
 
-typedef struct mb_frame;
-
 #endif

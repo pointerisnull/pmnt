@@ -63,3 +63,37 @@ struct mb_frame assemble_frame(byte_t address, mb_pdu *pdu) {
     
     return frame;
 }
+
+void handle_frame(mb_frame *frame) {
+    byte_t func = frame->pdu.func_code;
+
+    switch (func) {
+        case FUNC01: // Read coils
+
+            break;
+        case FUNC02: // Read discrete inputs
+
+            break;
+
+        case FUNC03: // Read holding registers
+
+            break;
+
+        case FUNC04: // Read input registers
+
+            break;
+
+        case FUNC05: // Write single coil
+            break;
+
+        case FUNC06: // Write single register
+            
+            break;
+        case FUNC15: // Write multiple coils
+            
+            break;
+        case FUNC16: // Write multiple registers
+            
+            break;
+    }
+}
