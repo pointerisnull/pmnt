@@ -10,14 +10,12 @@ int main(int argc, char **argv) {
 		crc16_t crc = crc16((byte_t *) argv[1], len);
 		printf("CRC16: %x\n", crc);
 
-
 		*argv[1] = 0xFF; // Corrupt a byte
 		if (validate_crc((byte_t *)argv[1], len, crc))
 			printf("CRC Validated!\n");
 		else
 			printf("CRC values do not match, data must be corrupt!\n");
 	}
-
 
 	return 0;
 }
