@@ -11,10 +11,7 @@ typedef uint64_t hash64_t;
 typedef uint16_t crc16_t;
 typedef uint64_t ipv4_t;
 
-typedef struct tcp_packet;
-
 typedef struct mb_RTU_frame;
-typedef struct mb_RTU_ascii_frame;
 typedef struct mb_master_node;
 
 #endif

@@ -31,35 +31,42 @@ enum MB_EXCEPTIONS {
     GATEWAY_UNAVAIL     = 10,
     GATEWAY_RESP_FAIL   = 11
 };
+/*
+The MODBUS protocol defines three PDUs. They are :
+    MODBUS Request PDU, mb_req_pdu
+    MODBUS Response PDU, mb_rsp_pdu
+    MODBUS Exception Response PDU, mb_excep_rsp_pdu
+
+The mb_req_pdu is defined as:
+    mb_req_pdu = {function_code, request_data}, where
+        function_code = [1 byte] MODBUS function code,
+        request_data = [n bytes] This field is function code dependent and usually
+         contains information such as variable references,
+         variable counts, data offsets, sub-function codes etc.
+    The mb_rsp_pdu is defined as:
+        mb_rsp_pdu = {function_code, response_data}, where
+        function_code = [1 byte] MODBUS function code
+        response_data = [n bytes] This field is function code dependent and usually
+         contains information such as variable references,
+         variable counts, data offsets, sub-function codes, etc.
+    The mb_excep_rsp_pdu is defined as:
+        mb_excep_rsp_pdu = {exception-function_code, request_data}, where
+        exception-function_code = [1 byte] MODBUS function code + 0x80
+        exception_code = [1 byte] MODBUS Exception Code Defined in table
+
+*/
+
+typedef struct mb_pdu {
+    byte_t function_code;
+    byte_t data[MAX_DATA_SIZE];
+    size_t data_size;
+} mb_pdu;
 
 #pragma pack(push, 1) // Ensure data is packed together
 struct mb_RTU_frame {
     byte_t address;
-    byte_t function_code;
-    byte_t data[MAX_DATA_SIZE];
+    mb_pdu pdu;
     crc16_t crc;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1) // Ensure data is packed together
-struct mb_RTU_ascii_frame {
-    char start;
-    char address[2];
-    char function_code[2];
-    char data[MAX_DATA_SIZE*2];
-    char lrc[2];
-    char end[2]
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1) // Ensure data is packed together
-struct mb_TCP_frame {
-    word_t transaction_id;
-    word_t protocol_id;
-    word_t length; // Number of remaining bytes in this frame
-    byte_t unit_id; // Slave address
-    byte_t function_code;
-    byte_t data[MAX_DATA_SIZE];
 };
 #pragma pack(pop)
 
@@ -70,5 +77,7 @@ struct mb_master_node {
     byte_t addresses[MAX_SLAVE_ADDRESSES];
 };
 
+mb_pdu gen_pdu(byte_t func_code, byte_t *data, size_t size);
+crc16_t gen_crc(byte_t address, mb_pdu *pdu);
 
 #endif
