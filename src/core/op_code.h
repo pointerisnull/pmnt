@@ -1,5 +1,5 @@
-#ifndef CMD_CODE_H
-#define CMD_CODE_H
+#ifndef OP_CODE_H
+#define OP_CODE_H
 
 /* 
  * COMMANDS:			ARGS:
@@ -13,16 +13,15 @@
  *	--update, -u		(tree hash) (node hash) -t (title) -f (tags)
  */
 
-enum CMDCODE {
-	RUN_SERVER	= 0x0,
-	HELP		= 0x1,
-	LIST		= 0x2,
-	GEN_TREE	= 0x3,
-	NEW			= 0x4,
-	POP			= 0x5,
-	PRUNE		= 0x6,
-	UPDATE		= 0x7
-	
+enum OPCODE {
+	HELP,
+	RUN_SERVER,
+	LIST,
+	GEN_TREE,
+	NEW,
+	POP,
+	PRUNE,
+	UPDATE	  
 };
 
 #endif

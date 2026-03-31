@@ -4,6 +4,7 @@
 #include "../misc/typedefs.h"
 
 #include <stdbool.h>
+#include <stddef.h>
 
 hash64_t str_to_bin(char *str);
 

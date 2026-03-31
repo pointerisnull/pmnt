@@ -4,6 +4,8 @@
 #include "../misc/typedefs.h"
 #include "../misc/bitset.h"
 
+#include <stddef.h>
+
 #define MAX_FRAME_SIZE          256
 #define MAX_DATA_SIZE           250
 #define MAX_SLAVE_ADDRESSES     256
