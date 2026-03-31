@@ -64,7 +64,19 @@ struct mb_frame assemble_frame(byte_t address, mb_pdu *pdu) {
     return frame;
 }
 
-void handle_frame(mb_frame *frame) {
+mb_node new_node(bool is_master) {
+    mb_node node;
+    node.is_master = is_master;
+
+    if (is_master) {
+        memset(node.slaves, 0, MAX_SLAVE_ADDRESSES);
+    }
+
+    node.addr = 0;
+
+}
+
+void handle_frame(mb_node *node, mb_frame *frame) {
     byte_t func = frame->pdu.func_code;
 
     switch (func) {

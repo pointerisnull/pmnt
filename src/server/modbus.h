@@ -5,6 +5,7 @@
 #include "../misc/bitset.h"
 
 #include <stddef.h>
+#include <stdbool.h>
 
 #define MAX_FRAME_SIZE          256
 #define MAX_DATA_SIZE           250
@@ -75,6 +76,7 @@ typedef struct mb_frame {
 } mb_frame;
 #pragma pack(pop)
 
+#pragma pack(push, 1) // Ensure data is packed together
 struct mb_data_model {
     byte_t coils[MAX_COILS/8];
     byte_t discrete_inputs[MAX_COILS/8];
@@ -82,21 +84,21 @@ struct mb_data_model {
     word_t input_registers[MAX_REGISTERS];
 
 } mb_data_model;
+#pragma pack(pop)
 
-struct mb_master_node {
+typedef struct mb_node {
+    byte_t is_master;
+    
+    // If I am a master node
     // Address 0 - Broadcast address
     // Address 1->247 - Slave addresses
     // Address 248->255 - Reserved
-    byte_t addresses[MAX_SLAVE_ADDRESSES];
-
-    struct mb_data_model data;
-};
-
-struct mb_slave_node {
+    struct mb_data_model slaves[MAX_SLAVE_ADDRESSES]; //196608 bytes
+    
+    // If I am a slave node
     byte_t addr;
-
-    struct mb_data_model data;
-};
+    
+} mb_node;
 
 // Frame helpers
 mb_pdu gen_pdu(byte_t *data, size_t size);
@@ -104,10 +106,10 @@ mb_pdu assemble_pdu(byte_t func_code, word_t reg_addr, byte_t *data, size_t size
 struct mb_frame assemble_frame(byte_t address, mb_pdu *pdu);
 crc16_t gen_crc(byte_t address, mb_pdu *pdu);
 
-// Data handlers -- slave
-void handle_frame(mb_frame *frame);
+// Node helpers
+mb_node new_node(bool is_master);
 
-// Data handlers -- master
-
+// Data handlers
+void handle_frame(mb_node *node, mb_frame *frame);
 
 #endif
